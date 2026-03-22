@@ -3,18 +3,22 @@
 ## Project Overview
 This project is an advanced **Indian Sign Language (ISL) Translation System** designed to bridge the communication gap for the deaf and hard-of-hearing community. It captures ISL gestures in real-time using a webcam, translates them into text using Deep Learning, and then synthesizes the text into spoken language using an AI-based voice assistant.
 
-## Key Features
-*   **Real-Time Detection:** Uses MediaPipe for low-latency hand landmark tracking.
-*   **Sequential Classification:** Employs a **Bidirectional LSTM (Long Short-Term Memory)** model with an **Attention Mechanism** to accurately recognize temporal patterns in sign gestures.
-*   **Voice Integration:** Integrates Microsoft Azure's **Edge-TTS** to provide natural-sounding Indian English voices (Female/Male).
-*   **Dynamic UI:** Live webcam overlay showing predicted phrases, confidence levels, and gesture buffer status.
+## What's Done So Far
+- [x] **Project Environment Setup:** Created virtual environment and `requirements.txt`.
+- [x] **Voice Module:** Configured `voice_config.py` and implemented `speaker.py` using `edge-tts`.
+- [x] **Preprocessing Pipeline:** Developed `keypoint_utils.py` and `preprocess.py` to handle `.pose` files and sequence generation.
+- [x] **Model Architecture:** Designed a **Bidirectional LSTM with Attention Mechanism** in `model.py`.
+- [x] **Training & Evaluation:** Implemented `train.py`, `dataset.py`, and `evaluate.py`.
+- [x] **Real-Time Interface:** Developed `live_detect.py` for webcam-based inference and voice output.
+- [x] **Project Structure & Documentation:** Set up `.gitignore` and `README.md`.
 
-## Technologies Used
-*   **Computer Vision:** OpenCV, MediaPipe
-*   **Deep Learning:** PyTorch, LSTM, Attention Mechanisms
-*   **Data Processing:** NumPy, Pandas, Scikit-learn
-*   **Voice Synthesis:** Edge-TTS, Pygame
-*   **Visualization:** Matplotlib, Seaborn
+## Key Techniques & Features
+*   **MediaPipe Integration:** Uses Google's MediaPipe Hands for high-performance 3D keypoint extraction from 2D images.
+*   **Bidirectional LSTM (Bi-LSTM):** Captures temporal dependencies by processing sign language sequences in both forward and backward directions.
+*   **Attention Mechanism:** Learns to assign weights to different frames in a gesture, allowing the model to focus on the most "expressive" moments of a sign.
+*   **Edge-TTS Integration:** Uses Microsoft's Neural Text-to-Speech engine for high-quality, natural-sounding Indian English voices (`en-IN-NeerjaNeural`).
+*   **Sequential Smoothing:** Implements a rolling frame buffer (30 frames) to maintain smooth real-time predictions.
+*   **Confidence Filtering:** Uses a threshold (default 90%) to ensure only high-confidence translations are spoken.
 
 ## Project Structure
 ```text
@@ -40,44 +44,41 @@ D:\ISL_PROJECT\
 └── README.md
 ```
 
+## System Requirements
+- Python 3.10+
+- Webcam for real-time detection
+- Internet connection (for initial voice synthesis and pre-caching)
+
 ## Setup and Usage
 
 ### 1. Installation
-Create a virtual environment and install the required libraries:
 ```bash
 python -m venv venv
-venv\Scripts\activate
+.\venv\Scripts\activate
 pip install -r requirements.txt
-# Additional requirements for pose processing
 pip install pose-format
 ```
 
-### 2. Preprocessing
-Prepare the raw dataset into balanced sequences for training:
+### 2. Prepare Data
+Ensure your `.pose` files are in `data/raw/poses/` and the `iSign_v1.1.csv` file is in `data/raw/`.
 ```bash
 python src/preprocess.py
 ```
 
 ### 3. Training
-Train the LSTM model on your GPU or CPU:
 ```bash
 python src/train.py
 ```
 
-### 4. Evaluation
-Check the accuracy, classification report, and confusion matrix:
-```bash
-python src/evaluate.py
-```
-
-### 5. Live Detection
-Start the real-time translator:
+### 4. Live Translation
 ```bash
 python src/live_detect.py
 ```
 
-## Model Architecture
-The core model is a **Bidirectional LSTM** which processes a sequence of 30 frames (126 keypoints each). The **Attention Mechanism** allows the model to "focus" on the most important frames in a gesture, significantly improving accuracy for complex signs.
+## Future Roadmap
+- [ ] Support for facial expression analysis.
+- [ ] Expansion to multi-phrase sentence construction.
+- [ ] Offline TTS support.
 
 ## License
 MIT License
