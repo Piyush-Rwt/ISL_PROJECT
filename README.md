@@ -75,10 +75,7 @@ python src/train.py
 python src/live_detect.py
 ```
 
-## Future Roadmap
-- [ ] Support for facial expression analysis.
-- [ ] Expansion to multi-phrase sentence construction.
-- [ ] Offline TTS support.
+
 
 ## License
 MIT License
